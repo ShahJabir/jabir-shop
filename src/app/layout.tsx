@@ -22,7 +22,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${dmmono.className}`}>
-        {children}
+        <CartProvider>
+          {children}
+        </CartProvider>
       </body>
     </html>
   );
