@@ -25,7 +25,7 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CartProvider = (children: React.ReactNode) => {
+const CartProvider = ({children}: {children : React.ReactNode}) => {
   const [items, setItems] = React.useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const addItem = useCallback((product: any)=>{

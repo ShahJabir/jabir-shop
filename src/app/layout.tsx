@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { DM_Mono } from 'next/font/google';
 import React from 'react';
 import './globals.css';
+import CartProvider from '@/providers/cart-context';
 
 const dmmono = DM_Mono({
   weight: '400',
