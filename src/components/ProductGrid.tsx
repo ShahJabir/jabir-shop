@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
 import Image from 'next/image';
@@ -17,6 +18,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from './ui/sheet';
+
+/* eslint-disable no-unused-vars */
 
 type ProductGridProps = {
   products: any[];
@@ -83,21 +86,21 @@ export const ProductGrid = ({ products }: ProductGridProps) => {
                           <li key={item.id} className="flex gap-4">
                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
                               <Image
-                                src={item.images?[0].src || '/placeholder.svg'}
+                                src={Array.isArray(item.images) ? item.images[0]?.src || '/placeholder.svg' : item.images.src || '/placeholder.svg'}
                                 alt={item.name}
                                 height={96}
                                 width={96}
                                 className="h-full w-full object-contain p-2"
                               />
                             </div>
-                            <div className='flex flex-1 flex-col'>
-                                <div className='flex justify-between text-base font-medium text-gray-900'>
-                                    <h3>{item.name}</h3>
-                                    <p className='ml-4'>${item.price}</p>
-                                </div>
-                                <div className='flex items-center mt-2'>
-                                    <Button className='rounded-md border p-1'></Button>
-                                </div>
+                            <div className="flex flex-1 flex-col">
+                              <div className="flex justify-between text-base font-medium text-gray-900">
+                                <h3>{item.name}</h3>
+                                <p className="ml-4">${item.price}</p>
+                              </div>
+                              <div className="mt-2 flex items-center">
+                                <Button className="rounded-md border p-1"></Button>
+                              </div>
                             </div>
                           </li>
                         ))}
