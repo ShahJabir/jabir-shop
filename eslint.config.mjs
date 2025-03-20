@@ -21,7 +21,7 @@ const eslintConfig = [
       curly: 'error',
       'no-var': 'error',
       indent: ['error', 2],
-      'comma-dangle': ['error', 'always-multiline'],
+      //   'comma-dangle': ['error', 'always-multiline'],
       'no-multiple-empty-lines': ['error', { max: 1 }],
       'keyword-spacing': ['error', { before: true, after: true }],
     },
