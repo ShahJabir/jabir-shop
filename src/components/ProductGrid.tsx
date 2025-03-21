@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
-import { MoreVertical, ShoppingCart, X } from 'lucide-react';
+import { Minus, MoreVertical, Plus, ShoppingCart, X } from 'lucide-react';
 
 import { useCart } from '@/hooks/use-cart';
 import { navbarData } from '@/lib/data';
@@ -19,15 +18,20 @@ import {
   SheetTrigger,
 } from './ui/sheet';
 
-/* eslint-disable no-unused-vars */
-
 type ProductGridProps = {
   products: any[];
 };
 
 export const ProductGrid = ({ products }: ProductGridProps) => {
   const [toggle, setToggle] = useState(false);
-  const { isOpen, setIsOpen, items: cartItems } = useCart();
+  const {
+    isOpen,
+    setIsOpen,
+    items: cartItems,
+    updateQuantity,
+    removeItem,
+    cartTotal,
+  } = useCart();
   return (
     <>
       <div className="min-h-screen bg-white">
@@ -86,7 +90,11 @@ export const ProductGrid = ({ products }: ProductGridProps) => {
                           <li key={item.id} className="flex gap-4">
                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
                               <Image
-                                src={Array.isArray(item.images) ? item.images[0]?.src || '/placeholder.svg' : item.images.src || '/placeholder.svg'}
+                                src={
+                                  Array.isArray(item.images)
+                                    ? item.images[0]?.src || '/placeholder.svg'
+                                    : item.images.src || '/placeholder.svg'
+                                }
                                 alt={item.name}
                                 height={96}
                                 width={96}
@@ -99,12 +107,44 @@ export const ProductGrid = ({ products }: ProductGridProps) => {
                                 <p className="ml-4">${item.price}</p>
                               </div>
                               <div className="mt-2 flex items-center">
-                                <Button className="rounded-md border p-1"></Button>
+                                <Button
+                                  onClick={() =>
+                                    updateQuantity(item.id, item.quantity - 1)
+                                  }
+                                  className="rounded-md border p-1"
+                                >
+                                  <Minus className="h-4 w-4" />
+                                </Button>
+                                <span className="mx-2 w-8 text-center">
+                                  {item.quantity}
+                                </span>
+                                <Button
+                                  onClick={() =>
+                                    updateQuantity(item.id, item.quantity + 1)
+                                  }
+                                  className="rounded-md border p-1"
+                                >
+                                  <Plus className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  onClick={() => removeItem(item.id)}
+                                  className="ml-auto text-gray-400 hover:text-gray-500"
+                                >
+                                  <X className="h-5 w-5" />
+                                  <span className="sr-only">Remove</span>
+                                </Button>
                               </div>
                             </div>
                           </li>
                         ))}
                       </ul>
+                    </div>
+                    <div className="border-t border-gray-200 py-6">
+                      <div className="mb-4 flex justify-between text-base font-medium text-gray-900">
+                        <p>Subtotal:</p>
+                        <p>${cartTotal}</p>
+                      </div>
+                      {/** WIP <Checkout /> */}
                     </div>
                   </div>
                 )}
@@ -112,6 +152,37 @@ export const ProductGrid = ({ products }: ProductGridProps) => {
             </Sheet>
           </div>
         </header>
+        <main className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 gap-40 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {products.map((product, index) => (
+              <Link
+                href={`/product/${product.id}`}
+                key={index}
+                className="group relative flex flex-col"
+              >
+                <div className="aspect-square overflow-hidden rounded-md">
+                  <Image
+                    src={product.images[0].src || '/placeholder.svg'}
+                    alt={product.name}
+                    width={300}
+                    height={300}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div className="flex flex-col justify-end opacity-0 group-hover:opacity-100">
+                  <div className="mb-2 flex items-center justify-between">
+                    <h3 className="text-primary text-base font-semibold">
+                      {product.name}
+                    </h3>
+                    <p className="text-primary text-base font-semibold">
+                      ${product.price}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </main>
       </div>
     </>
   );
